@@ -1,0 +1,18 @@
+
+framework module StarIO {
+
+    header "/Users/jesse/Developer/StarKit/StarKit/Vendor/StarIO.framework/Headers/BluetoothPort.h"
+    header "/Users/jesse/Developer/StarKit/StarKit/Vendor/StarIO.framework/Headers/Lock.h"
+    header "/Users/jesse/Developer/StarKit/StarKit/Vendor/StarIO.framework/Headers/Port.h"
+    header "/Users/jesse/Developer/StarKit/StarKit/Vendor/StarIO.framework/Headers/SMBluetoothManager.h"
+    header "/Users/jesse/Developer/StarKit/StarKit/Vendor/StarIO.framework/Headers/SMPort.h"
+    header "/Users/jesse/Developer/StarKit/StarKit/Vendor/StarIO.framework/Headers/SMProxiPRNTManager.h"
+    header "/Users/jesse/Developer/StarKit/StarKit/Vendor/StarIO.framework/Headers/WBluetoothPort.h"
+    
+    header "/Users/jesse/Developer/StarKit/StarKit/Vendor/StarIO.framework/Headers/starmicronics/Platform.h"
+    header "/Users/jesse/Developer/StarKit/StarKit/Vendor/StarIO.framework/Headers/starmicronics/StarIOPort.h"
+    
+    header "/Users/jesse/Developer/StarKit/StarKit/Vendor/StarIO.framework/Headers/starmicronics/platform/Mac.h"
+    
+    export *
+}
