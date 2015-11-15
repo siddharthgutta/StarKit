@@ -5,4 +5,4 @@ Inspired by OpenTable's [star-printing](https://github.com/opentable/star-printi
 
 ## License
 
-StarPrinting is available under the MIT license. See the LICENSE file for more info.
+StarKit is available under the MIT license. See the LICENSE file for more info.
