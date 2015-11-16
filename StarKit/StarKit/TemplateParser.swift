@@ -23,13 +23,33 @@ enum TemplateElement: String {
 
 class TemplateParser: NSObject, NSXMLParserDelegate {
     
-    private let parsedData = NSMutableData()
+    private var parsedData = NSMutableData()
     
     func parse(data: NSData) -> NSData {
+        parsedData = NSMutableData()
+        
         let parser = NSXMLParser(data: data)
         parser.delegate = self
         parser.parse()
+        
+        /*
+        appendDataFromString("Test\n")
+        parsedData.appendBytes(PrinterCommand.alignLeftCommand, length: 4)
+        appendDataFromString("Left\n")
+        parsedData.appendBytes(PrinterCommand.alignCenterCommand, length: 4)
+        appendDataFromString("Center\n")
+        parsedData.appendBytes(PrinterCommand.alignRightCommand, length: 4)
+        appendDataFromString("Right")
+        parsedData.appendBytes(PrinterCommand.partialCutCommand, length: 3)
+        */
+
         return parsedData
+    }
+    
+    private func appendBytes(bytes: [Byte]?) {
+        if let bytes = bytes {
+            parsedData.appendBytes(bytes, length: bytes.count)
+        }
     }
     
     private func appendDataFromString(string: String) {
@@ -41,39 +61,36 @@ class TemplateParser: NSObject, NSXMLParserDelegate {
     // MARK: - NSXMLParserDelegate
     
     func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
-        let bytes: [Byte]
-        
         let element = TemplateElement(rawValue: elementName)
+        
         switch element! {
         case .AlignCenter:
-            bytes = PrinterCommand.alignCenterCommand
+            appendBytes(PrinterCommand.alignCenterCommand)
         case .AlignLeft:
-            bytes = PrinterCommand.alignLeftCommand
+            appendBytes(PrinterCommand.alignLeftCommand)
         case .AlignRight:
-            bytes = PrinterCommand.alignRightCommand
+            appendBytes(PrinterCommand.alignRightCommand)
         case .Bold:
-            bytes = PrinterCommand.boldStartCommand
+            appendBytes(PrinterCommand.boldStartCommand)
         case .InvertColor:
-            bytes = PrinterCommand.invertedColorStartCommand
+            appendBytes(PrinterCommand.invertedColorStartCommand)
         case .Large:
-            bytes = PrinterCommand.largeTextStartCommand
+            appendBytes(PrinterCommand.largeTextStartCommand)
         case .NewLine:
-            bytes = PrinterCommand.newLineCommand
+            appendBytes(PrinterCommand.newLineCommand)
         case .OpenDrawer1:
-            bytes = PrinterCommand.openDrawer1Command
+            appendBytes(PrinterCommand.openDrawer1Command)
         case .OpenDrawer2:
-            bytes = PrinterCommand.openDrawer2Command
+            appendBytes(PrinterCommand.openDrawer2Command)
         case .Print:
-            bytes = []
+            appendBytes(PrinterCommand.alignLeftCommand)
         case .Tab:
-            bytes = PrinterCommand.tabCommand
+            appendBytes(PrinterCommand.tabCommand)
         case .Underline:
-            bytes = PrinterCommand.underlineStartCommand
+            appendBytes(PrinterCommand.underlineStartCommand)
         case .Upperline:
-            bytes = PrinterCommand.upperlineStartCommand
+            appendBytes(PrinterCommand.upperlineStartCommand)
         }
-        
-        parsedData.appendBytes(bytes, length: bytes.count)
     }
     
     func parser(parser: NSXMLParser, foundCharacters string: String) {
@@ -92,27 +109,24 @@ class TemplateParser: NSObject, NSXMLParserDelegate {
     }
     
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        let bytes: [Byte]
-        
         let element = TemplateElement(rawValue: elementName)
+        
         switch element! {
         case .Bold:
-            bytes = PrinterCommand.boldEndCommand
+            appendBytes(PrinterCommand.boldEndCommand)
         case .InvertColor:
-            bytes = PrinterCommand.invertedColorEndCommand
+            appendBytes(PrinterCommand.invertedColorEndCommand)
         case .Large:
-            bytes = PrinterCommand.largeTextEndCommand
+            appendBytes(PrinterCommand.largeTextEndCommand)
         case .Print:
-            bytes = PrinterCommand.fullCutCommand
+            appendBytes(PrinterCommand.partialCutCommand)
         case .Underline:
-            bytes = PrinterCommand.underlineEndCommand
+            appendBytes(PrinterCommand.underlineEndCommand)
         case .Upperline:
-            bytes = PrinterCommand.upperlineEndCommand
+            appendBytes(PrinterCommand.upperlineEndCommand)
         default:
-            bytes = []
+            appendBytes(nil)
         }
-        
-        parsedData.appendBytes(bytes, length: bytes.count)
     }
     
 }

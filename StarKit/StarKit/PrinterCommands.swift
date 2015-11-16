@@ -8,9 +8,9 @@ class PrinterCommand {
     static let newLineCommand: [Byte] = [0x0a]
     
     // Alignment
-    static let alignLeftCommand: [Byte] = [0x1b, 0x1d, 0x61, 0x00]
-    static let alignCenterCommand: [Byte] = [0x1b, 0x1d, 0x61, 0x01]
-    static let alignRightCommand: [Byte] = [0x1b, 0x1d, 0x61, 0x02]
+    static let alignLeftCommand: [Byte] = [0x1b, 0x1d, 0x61, 0x30]
+    static let alignCenterCommand: [Byte] = [0x1b, 0x1d, 0x61, 0x31]
+    static let alignRightCommand: [Byte] = [0x1b, 0x1d, 0x61, 0x32]
     
     // Text Formatting
     static let boldStartCommand: [Byte] = [0x1b, 0x45]

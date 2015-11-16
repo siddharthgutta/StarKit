@@ -1,20 +1,19 @@
 <print>
-    <large>StarKit Test</large>
-    
-    Printer {{printerName}} - {{printerStatus}}
-    
-    Left Aligned Text
-    <center />
-    Center Aligned Text
-    <right />
-    Right Aligned Text
-    
-    <left />
-    <bold>Bold text\n</bold>
-    <underline>Underline text\n</underline>
-    <upperline>Upperline text\n</upperline>
-    <invertcolor>Inverted color\n</invertcolor>
-    
-    <opendrawer2 />
-    
+<large>StarKit Test</large>
+
+Printer {{printerName}} - {{printerStatus}}
+
+Left Aligned Text
+<center />
+Center Aligned Text
+<right />
+Right Aligned Text
+
+<left />
+<bold>Bold text\n</bold>
+<underline>Underline text\n</underline>
+<upperline>Upperline text\n</upperline>
+<invertcolor>Inverted color\n</invertcolor>
+
+<opendrawer2 />
 </print>
