@@ -31,6 +31,7 @@ public class Printer {
             delegate?.printer(self, didChangeStatus: status)
         }
     }
+    public var printing: Bool
     
     public var portName: String {
         return portInfo.portName
@@ -50,7 +51,7 @@ public class Printer {
     init(portInfo: PortInfo) {
         self.portInfo = portInfo
         self.status = .Disconnected
-        
+        self.printing = false
         self.queue.maxConcurrentOperationCount = 1
     }
     
@@ -83,6 +84,8 @@ public class Printer {
     private func sendData(data: NSData) throws {
         try establishConnection()
         
+        printing = true
+        
         let totalDataSize = data.length
         let dataSentToPrinter = malloc(totalDataSize)
         data.getBytes(dataSentToPrinter, length: data.length)
@@ -101,24 +104,41 @@ public class Printer {
         
         free(dataSentToPrinter)
         
-        closeConnection()
+        var token: dispatch_once_t = 0
+        if queue.operationCount == 1 {
+            printing = false
+            closeConnection()
+            token = 0
+        } else {
+            dispatch_once(&token) {
+                dispatch_after(30, dispatch_get_main_queue()) {
+                    if self.printing {
+                        self.closeConnection()
+                        token = 0
+                    }
+                }
+            }
+        }
     }
 
     private func establishConnection() throws {
+        guard status == .Disconnected else {
+            return
+        }
+        
         status = .Connecting
         var connected = false
         for _ in 0..<3 {
             connected = openPort()
             if connected {
                 status = .Connected
-                break
+                return
             }
             sleep(3)
         }
-        if !connected {
-            status = .Disconnected
-            throw PrintingError.EstablishingConnection
-        }
+        
+        status = .Disconnected
+        throw PrintingError.EstablishingConnection
     }
     
     private func closeConnection() {
