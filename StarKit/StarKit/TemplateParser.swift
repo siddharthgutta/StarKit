@@ -31,17 +31,6 @@ class TemplateParser: NSObject, NSXMLParserDelegate {
         let parser = NSXMLParser(data: data)
         parser.delegate = self
         parser.parse()
-        
-        /*
-        appendDataFromString("Test\n")
-        parsedData.appendBytes(PrinterCommand.alignLeftCommand, length: 4)
-        appendDataFromString("Left\n")
-        parsedData.appendBytes(PrinterCommand.alignCenterCommand, length: 4)
-        appendDataFromString("Center\n")
-        parsedData.appendBytes(PrinterCommand.alignRightCommand, length: 4)
-        appendDataFromString("Right")
-        parsedData.appendBytes(PrinterCommand.partialCutCommand, length: 3)
-        */
 
         return parsedData
     }
@@ -94,18 +83,7 @@ class TemplateParser: NSObject, NSXMLParserDelegate {
     }
     
     func parser(parser: NSXMLParser, foundCharacters string: String) {
-        let cleanedString = string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        if !cleanedString.isEmpty {
-            let mutableString = NSMutableString(string: string)
-            
-            let newLineCommandString = String(data: NSData(bytes: PrinterCommand.newLineCommand, length: PrinterCommand.newLineCommand.count), encoding: NSASCIIStringEncoding)!
-            mutableString.replaceOccurrencesOfString("\\n", withString: newLineCommandString, options: [], range: NSMakeRange(0, mutableString.length))
-            
-            let tabCommandString = String(data: NSData(bytes: PrinterCommand.tabCommand, length: PrinterCommand.tabCommand.count), encoding: NSASCIIStringEncoding)!
-            mutableString.replaceOccurrencesOfString("\\t", withString: tabCommandString, options: [], range: NSMakeRange(0, mutableString.length))
-            
-            appendDataFromString(mutableString as String)
-        }
+        appendDataFromString(string)
     }
     
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
